@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -19,7 +19,6 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [currentImage, setCurrentImage] = useState(null);
-  
 
   useEffect(() => {
     if (!search) {
@@ -34,7 +33,7 @@ const App = () => {
           return toast.error('Oops, there are no such pictures. Try again');
         }
 
-        setImages(prevState => [...prevState, ...data.hits]);
+        setImages(prevImages => [...prevImages, ...data.hits]);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -42,7 +41,7 @@ const App = () => {
       }
     };
     getImages();
-  }, [search, page, setLoading, setImages, setError, setImages]);
+  }, [search, page]);
 
   const onSearchImages = ({ search }) => {
     if (search.trim() === '') {
@@ -55,16 +54,16 @@ const App = () => {
     setPage(1);
   };
 
-  const showImage = data => {
+  const openModal = data => {
     setCurrentImage(data);
-   };
+  };
 
-  const loadMore = () => {
+  const onClick = () => {
     setPage(prevPage => prevPage + 1);
   };
 
   const onClose = () => {
-       setCurrentImage(null);
+    setCurrentImage(null);
   };
 
   return (
@@ -74,10 +73,10 @@ const App = () => {
       {error && <p>Something went wrong. Try reloading the page</p>}
 
       {images.length > 0 && (
-        <ImageGallery images={images} openModal={showImage} search={search} />
+        <ImageGallery images={images} openModal={openModal} search={search} />
       )}
 
-      {images.length > 0 && !loading && <Button onLoadMore={loadMore} />}
+      {images.length > 0 && !loading && <Button onClick={onClick} />}
 
       <ToastContainer />
 
@@ -90,7 +89,7 @@ const App = () => {
           currentImage={currentImage}
           search={search}
         />
-        )}
+      )}
     </>
   );
 };

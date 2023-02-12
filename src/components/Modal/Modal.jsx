@@ -5,43 +5,38 @@ import css from './Modal.module.css';
 
 const modalRoot = document.querySelector('#modal-root');
 
-const Modal = ({onClose, currentImage: {src}, search}) => {
-  
+const Modal = ({ onClose, currentImage: { src }, search }) => {
   const closeModal = ({ target, currentTarget, code }) => {
-    if (target === currentTarget || code === "Escape") {
-      onClose()
+    if (target === currentTarget || code === 'Escape') {
+      onClose();
     }
-  }
+  };
 
   useEffect(() => {
     document.addEventListener('keydown', closeModal);
-    return () => document.removeEventListener('keydown', closeModal)
+    return () => document.removeEventListener('keydown', closeModal);
   }, [closeModal]);
 
-  
-  return (
-    createPortal(
-      <div className={css.Overlay} onClick={closeModal}>
-        <div className={css.Modal}>
-          <img src={src} alt={search} width="700" />
-          <button
-            type="button"
-            className={css.ModalCloseBtn}
-            onClick={closeModal}
-          />
-          {/* {children} */}
-        </div>
-      </div>,
-      modalRoot
-    )
-  )
-  }
-
+  return createPortal(
+    <div className={css.Overlay} onClick={closeModal}>
+      <div className={css.Modal}>
+        <img src={src} alt={search} width="700" />
+        <button
+          type="button"
+          className={css.ModalCloseBtn}
+          onClick={closeModal}
+        />
+        {/* {children} */}
+      </div>
+    </div>,
+    modalRoot
+  );
+};
 
 export default Modal;
 
 Modal.propTypes = {
   search: PropTypes.string.isRequired,
   onClose: PropTypes.func,
-  currentImage: PropTypes.shape({ src: PropTypes.string}).isRequired,
+  currentImage: PropTypes.shape({ src: PropTypes.string }).isRequired,
 };

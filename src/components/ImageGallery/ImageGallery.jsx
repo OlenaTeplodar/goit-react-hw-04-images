@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
-import  ImageGalleryItem  from '../ImageGalleryItem/ImageGalleryItem';
+import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 import css from './ImageGallery.module.css';
 
-const ImageGallery = ({ images, showImage, search }) => {
+const ImageGallery = ({ images, openModal, search }) => {
   return (
     <ul className={css.ImageGallery}>
       {images.map(({ id, webformatURL, largeImageURL, tags }) => {
@@ -13,13 +13,17 @@ const ImageGallery = ({ images, showImage, search }) => {
             tags={tags}
             webformatURL={webformatURL}
             largeImageURL={largeImageURL}
-            showImage={showImage}
+            openModal={openModal}
             search={search}
           />
         );
       })}
     </ul>
   );
+};
+
+ImageGallery.defaultProps = {
+  images: [],
 };
 
 export default ImageGallery;
@@ -33,5 +37,5 @@ ImageGallery.propTypes = {
       tags: PropTypes.string.isRequired,
     }).isRequired
   ),
-  showImage: PropTypes.func,
+  openModal: PropTypes.func,
 };
